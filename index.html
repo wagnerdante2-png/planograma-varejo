@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Planograma VM • MVP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="brand-mark">P</div>
+        <div>
+          <strong>Planograma VM</strong>
+          <span>Execução de loja & auditoria visual</span>
+        </div>
+      </div>
+
+      <div class="topbar-context">
+        <button class="context-chip active">Loja Modelo</button>
+        <button class="context-chip">Regional 01</button>
+        <button class="context-chip">Versão 0.1 • Rascunho</button>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="icon-btn" title="Salvar" id="saveBtn">💾</button>
+        <button class="icon-btn" title="Histórico">↺</button>
+        <button class="primary-btn" id="publishBtn">Publicar layout</button>
+        <div class="avatar">WM</div>
+      </div>
+    </header>
+
+    <nav class="subnav">
+      <button class="nav-item active" data-view="builder">Editor de Planograma</button>
+      <button class="nav-item" data-view="audit">Auditoria Regional</button>
+      <button class="nav-item" data-view="standards">Padrões & Regras</button>
+      <button class="nav-item" data-view="ai">Visão IA <span class="beta">FUTURO</span></button>
+    </nav>
+
+    <main class="main-layout">
+      <aside class="left-panel">
+        <section class="panel-section">
+          <div class="section-title-row">
+            <div>
+              <span class="eyebrow">CATÁLOGO</span>
+              <h2>Produtos genéricos</h2>
+            </div>
+            <button class="mini-btn" id="newProductBtn">＋</button>
+          </div>
+          <input class="search-input" id="productSearch" placeholder="Buscar produto, marca ou categoria" />
+          <div class="filter-row">
+            <button class="filter-pill active" data-filter="all">Todos</button>
+            <button class="filter-pill" data-filter="bebidas">Bebidas</button>
+            <button class="filter-pill" data-filter="mercearia">Mercearia</button>
+          </div>
+          <div id="productCatalog" class="product-catalog"></div>
+        </section>
+
+        <section class="panel-section compact">
+          <span class="eyebrow">COMUNICAÇÃO</span>
+          <h3>Elementos de gôndola</h3>
+          <div class="element-grid">
+            <button class="element-card" data-action="label-white"><span class="element-preview white-label"></span>Etiqueta branca</button>
+            <button class="element-card" data-action="label-pink"><span class="element-preview pink-label"></span>Etiqueta rosa</button>
+            <button class="element-card" data-action="poster"><span class="element-preview poster-preview">A4</span>Cartaz</button>
+            <button class="element-card" data-action="separator"><span class="element-preview divider-preview"></span>Separador</button>
+          </div>
+        </section>
+      </aside>
+
+      <section class="workspace-area" id="builderView">
+        <div class="workspace-toolbar">
+          <div>
+            <span class="eyebrow">PLANOGRAMA ATIVO</span>
+            <div class="title-line">
+              <h1 id="planogramName">Bebidas • Refrigerantes 2L</h1>
+              <button class="text-icon-btn" id="renamePlanogramBtn">✎</button>
+            </div>
+            <p>Módulos 01–03 • Parede central • Loja modelo</p>
+          </div>
+
+          <div class="toolbar-cluster">
+            <label>Estratégia
+              <select id="strategySelect">
+                <option value="manual">Manual / arrasta e solta</option>
+                <option value="brand">Agrupar por marca</option>
+                <option value="price">Ordenar por preço</option>
+                <option value="size">Ordenar por volume</option>
+                <option value="auto">Auto-planejamento</option>
+              </select>
+            </label>
+            <label>Preset
+              <select id="presetSelect">
+                <option value="custom">Personalizado</option>
+                <option value="softdrinks">Refrigerantes</option>
+                <option value="snacks">Salgadinhos</option>
+                <option value="mixed">Mix conveniência</option>
+              </select>
+            </label>
+            <button class="secondary-btn" id="applyStrategyBtn">Aplicar</button>
+          </div>
+        </div>
+
+        <div class="kpi-strip">
+          <div class="kpi-card"><span>Frentes</span><strong id="facesKpi">48</strong><small>ocupação planejada</small></div>
+          <div class="kpi-card"><span>SKUs</span><strong id="skuKpi">12</strong><small>itens distintos</small></div>
+          <div class="kpi-card"><span>Aproveitamento</span><strong id="fillKpi">82%</strong><small>espaço horizontal</small></div>
+          <div class="kpi-card"><span>Conformidade</span><strong class="good" id="complianceKpi">96%</strong><small>regras simuladas</small></div>
+        </div>
+
+        <div class="canvas-card">
+          <div class="canvas-header">
+            <div class="scale-legend">
+              <span><i class="dot orange"></i> Perfil porta-preços</span>
+              <span><i class="dot gray"></i> Produto genérico</span>
+              <span><i class="dot pink"></i> Promoção</span>
+            </div>
+            <div class="canvas-actions">
+              <button class="ghost-btn" id="zoomOutBtn">−</button>
+              <span id="zoomLabel">100%</span>
+              <button class="ghost-btn" id="zoomInBtn">＋</button>
+              <button class="ghost-btn" id="clearBtn">Limpar</button>
+            </div>
+          </div>
+
+          <div class="canvas-scroll">
+            <div id="gondolaStage" class="gondola-stage"></div>
+          </div>
+        </div>
+
+        <div class="bottom-grid">
+          <section class="insight-card">
+            <div class="section-title-row">
+              <div><span class="eyebrow">ANÁLISE RÁPIDA</span><h3>Leitura do layout</h3></div>
+              <span class="status-badge success">Boa execução</span>
+            </div>
+            <div class="insight-list" id="insightList"></div>
+          </section>
+          <section class="insight-card">
+            <div class="section-title-row">
+              <div><span class="eyebrow">AUDITORIA</span><h3>Regras críticas</h3></div>
+              <button class="mini-link" id="runAuditBtn">Executar agora</button>
+            </div>
+            <div id="auditChecklist" class="audit-checklist"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="workspace-area hidden" id="auditView">
+        <div class="page-heading"><div><span class="eyebrow">REGIONAL</span><h1>Auditoria de aderência</h1><p>Comparativo rápido entre layout publicado e execução reportada pelas lojas.</p></div><button class="primary-btn">Nova rodada de auditoria</button></div>
+        <div class="audit-dashboard" id="auditDashboard"></div>
+      </section>
+
+      <section class="workspace-area hidden" id="standardsView">
+        <div class="page-heading"><div><span class="eyebrow">GOVERNANÇA</span><h1>Padrões de exposição</h1><p>Regras operacionais utilizadas pelo MVP para orientar VM, loja e auditoria.</p></div></div>
+        <div class="standards-grid" id="standardsGrid"></div>
+      </section>
+
+      <section class="workspace-area hidden" id="aiView">
+        <div class="page-heading"><div><span class="eyebrow">ROADMAP</span><h1>Reconhecimento visual por IA</h1><p>Conceito futuro para comparar fotografia real da gôndola com o planograma publicado.</p></div><span class="status-badge warning">Protótipo conceitual</span></div>
+        <div class="ai-layout">
+          <div class="upload-zone" id="aiUploadZone"><div class="upload-icon">⌁</div><h3>Arraste uma foto da gôndola</h3><p>O MVP simula detecção de frentes, etiquetas, cartazes e desvios.</p><button class="secondary-btn">Selecionar imagem</button></div>
+          <div class="ai-result-card"><span class="eyebrow">SAÍDA ESPERADA</span><h3>Comparativo automático</h3><div class="fake-detection"><div class="fake-shelf"></div><div class="detection-box box-1">SKU?</div><div class="detection-box box-2">Etiqueta</div><div class="detection-box box-3">Cartaz</div></div><ul><li>Detecção de produto e quantidade de frentes.</li><li>Checagem de posição versus planograma.</li><li>Leitura de etiqueta e identificação da cor.</li><li>Validação de presença e tamanho de cartaz.</li><li>Score de aderência por módulo e loja.</li></ul></div>
+        </div>
+      </section>
+
+      <aside class="right-panel" id="rightPanel">
+        <div class="panel-section">
+          <span class="eyebrow">PROPRIEDADES</span>
+          <h2>Configuração</h2>
+          <div id="propertiesContent"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="modal-backdrop hidden" id="productModal">
+    <div class="modal">
+      <div class="modal-header"><div><span class="eyebrow">DETALHE DO PRODUTO</span><h2 id="modalTitle">Produto</h2></div><button class="icon-btn light" id="closeProductModal">×</button></div>
+      <div class="modal-body" id="productModalBody"></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="posterModal">
+    <div class="modal small">
+      <div class="modal-header"><div><span class="eyebrow">CARTAZEAMENTO</span><h2>Adicionar cartaz</h2></div><button class="icon-btn light" id="closePosterModal">×</button></div>
+      <div class="modal-body">
+        <label class="field">Formato<select id="posterSize"><option>A3</option><option selected>A4</option><option>A5</option><option>A6</option><option>A7</option></select></label>
+        <label class="field">Tipo<select id="posterType"><option>Preço regular</option><option>Oferta</option><option>Campanha sazonal</option></select></label>
+        <label class="field">Módulo<select id="posterModule"><option value="0">Módulo 01</option><option value="1">Módulo 02</option><option value="2">Módulo 03</option></select></label>
+        <button class="primary-btn full" id="confirmPosterBtn">Adicionar cartaz</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
