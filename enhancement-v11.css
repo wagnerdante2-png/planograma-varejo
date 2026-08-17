@@ -1,0 +1,34 @@
+/* Planograma VM v0.11 — escala responsiva real sem sobreposição */
+.gondola-stage.v10-stage .shelf-products{overflow:hidden!important;contain:layout paint;}
+.gondola-stage.v10-stage .sku-group{min-width:0!important;max-width:100%!important;overflow:visible!important;}
+.gondola-stage.v10-stage .sku-facings{min-width:0!important;max-width:100%!important;overflow:visible!important;gap:var(--facing-gap,1px)!important;}
+.gondola-stage.v10-stage .placed.v11-facing{width:var(--render-w)!important;min-width:var(--render-w)!important;max-width:var(--render-w)!important;height:100%!important;flex:0 0 var(--render-w)!important;margin:0!important;overflow:visible!important;}
+.gondola-stage.v10-stage .placed.v11-facing .product-depth-wrap{width:var(--render-w)!important;height:var(--render-h)!important;max-width:var(--render-w)!important;max-height:calc(100% - 1px)!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;transform:none!important;filter:drop-shadow(var(--shadow-x,3px) var(--shadow-y,7px) var(--shadow-blur,4px) rgba(0,0,0,.24))!important;}
+.gondola-stage.v10-stage .placed.v11-facing .generic-product,
+.gondola-stage.v10-stage .placed.v11-facing .generic-product.bag,
+.gondola-stage.v10-stage .placed.v11-facing .generic-product.bottle,
+.gondola-stage.v10-stage .placed.v11-facing .generic-product.jar,
+.gondola-stage.v10-stage .placed.v11-facing .generic-product.can,
+.gondola-stage.v10-stage .placed.v11-facing .generic-product.box,
+.gondola-stage.v10-stage .placed.v11-facing .generic-product.tube,
+.gondola-stage.v10-stage .placed.v11-facing .generic-product.bin,
+.gondola-stage.v10-stage .placed.v11-facing .generic-product.pan,
+.gondola-stage.v10-stage .placed.v11-facing .generic-product.roll,
+.gondola-stage.v10-stage .placed.v11-facing .generic-product.pillow,
+.gondola-stage.v10-stage .placed.v11-facing .generic-product.tool,
+.gondola-stage.v10-stage .placed.v11-facing .generic-product.toy{width:var(--render-w)!important;height:var(--render-h)!important;min-width:0!important;max-width:var(--render-w)!important;transform:none!important;transform-origin:bottom center!important;}
+.gondola-stage.v10-stage .placed.v11-facing:hover .generic-product{transform:translateY(-1px) scale(1.015)!important;}
+.gondola-stage.v10-stage .placed.v11-facing .generic-product span{font-size:var(--product-font,6px)!important;line-height:1.02!important;max-width:92%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:normal!important;}
+.gondola-stage.v10-stage .placed.v11-facing .generic-product span small{font-size:var(--product-subfont,4.4px)!important;margin-top:1px!important;}
+.modules-4 .shelf-type-badge,.modules-5 .shelf-type-badge{font-size:5px!important;opacity:.62!important;}
+.modules-5 .shelf-products{left:4px!important;right:4px!important;gap:0!important;}
+.modules-4 .shelf-products{left:5px!important;right:5px!important;gap:0!important;}
+.modules-5 .price-tag{transform:translateX(-50%) scale(.82)!important;transform-origin:center bottom!important;}
+.modules-4 .price-tag{transform:translateX(-50%) scale(.90)!important;transform-origin:center bottom!important;}
+/* preserva a aparência agradável da visão de 3 módulos */
+.modules-3 .gondola-module.v03{height:510px!important;}
+.modules-3 .shelf-type-badge{opacity:.45!important;}
+.modules-3 .placed.v11-facing .generic-product span{font-size:6px!important;}
+/* em 4/5 módulos as sombras também reduzem para não colidir visualmente */
+.modules-4 .placed.v11-facing{--shadow-x:2px;--shadow-y:5px;--shadow-blur:3px;}
+.modules-5 .placed.v11-facing{--shadow-x:1px;--shadow-y:4px;--shadow-blur:2px;}
