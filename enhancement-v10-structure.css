@@ -2,6 +2,7 @@
 
 /* IMPORTANTE: esta camada não altera largura/altura dos módulos, produtos, prateleiras ou escala da v0.9. */
 .module-head{overflow:visible!important}
+.gondola-module{overflow:visible!important}
 .vm-structure-trigger,.vm-level-trigger{
   border:1px solid #d9e0e6;background:#fff;color:#5d6a76;border-radius:6px;
   display:flex;align-items:center;justify-content:center;cursor:pointer;
@@ -47,14 +48,21 @@
 .shelf.vm-hooks .product-depth-wrap{position:relative;z-index:2}
 .shelf.vm-hooks .orange-profile{opacity:.88}
 
-/* Fita Cross: overlay visual; não participa do flex dos produtos e portanto não quebra a geometria */
+/* Fita Cross: instalada na DIVISÓRIA VERTICAL do módulo, nunca sobre os produtos.
+   A fita desce praticamente por toda a altura útil da gôndola, como ocorre fisicamente em loja. */
 .vm-cross-tape{
-  position:absolute;z-index:38;right:10px;top:8px;width:38px;height:calc(100% - 24px);pointer-events:auto
+  position:absolute;z-index:58;top:22px;bottom:15px;width:42px;pointer-events:auto;
+  filter:drop-shadow(2px 5px 4px rgba(0,0,0,.16));
 }
-.vm-cross-track{position:absolute;left:50%;top:13px;bottom:0;width:7px;transform:translateX(-50%);border-radius:3px;background:linear-gradient(90deg,#b5bec5,#f4f6f7 38%,#a5afb6 72%,#818c94);box-shadow:2px 3px 5px rgba(0,0,0,.16)}
-.vm-cross-label{position:absolute;left:50%;top:0;transform:translateX(-50%);width:35px;min-height:14px;padding:1px 2px;background:#fff;border:1px solid #7f8991;border-radius:2px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:4.4px;line-height:1.05;font-weight:800;color:#202930;box-shadow:0 2px 4px rgba(0,0,0,.14)}
-.vm-cross-unit{position:absolute;left:50%;transform:translateX(-50%);width:27px;height:22px;border-radius:4px;background:linear-gradient(100deg,#11171c,#657079 34%,#2a3238 70%,#0d1216);box-shadow:2px 3px 5px rgba(0,0,0,.22);color:#fff;font-size:4px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center}
-.vm-cross-unit.u1{top:24%}.vm-cross-unit.u2{top:52%}.vm-cross-unit.u3{top:80%}
+.vm-cross-tape.vm-cross-right{right:-26px}
+.vm-cross-tape.vm-cross-left{left:-26px}
+.vm-cross-tape[data-cross-index="1"]{transform:translateX(11px)}
+.vm-cross-tape[data-cross-index="2"]{transform:translateX(22px)}
+.vm-cross-track{position:absolute;left:50%;top:18px;bottom:3px;width:7px;transform:translateX(-50%);border-radius:3px;background:linear-gradient(90deg,#aab4bb,#f5f7f8 36%,#b3bcc2 66%,#7f8a92);box-shadow:2px 3px 5px rgba(0,0,0,.18),inset 1px 0 0 rgba(255,255,255,.7)}
+.vm-cross-track:after{content:"";position:absolute;left:-3px;right:-3px;bottom:-3px;height:5px;border-radius:3px;background:#919ba3;box-shadow:0 2px 3px rgba(0,0,0,.16)}
+.vm-cross-label{position:absolute;left:50%;top:0;transform:translateX(-50%);width:37px;min-height:18px;padding:2px;background:#fff;border:1px solid #6f7a82;border-radius:2px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:4.4px;line-height:1.05;font-weight:800;color:#202930;box-shadow:0 2px 4px rgba(0,0,0,.16)}
+.vm-cross-unit{position:absolute;left:50%;transform:translateX(-50%);width:28px;height:31px;border-radius:4px;background:linear-gradient(100deg,#10161b,#68737b 34%,#2b3339 70%,#0d1216);box-shadow:2px 4px 5px rgba(0,0,0,.24);color:#fff;font-size:4px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid rgba(255,255,255,.06)}
+.vm-cross-unit.u1{top:15%}.vm-cross-unit.u2{top:35%}.vm-cross-unit.u3{top:55%}.vm-cross-unit.u4{top:75%}.vm-cross-unit.u5{top:91%;transform:translate(-50%,-100%)}
 .vm-cross-remove{position:absolute;right:-8px;top:-6px;width:16px;height:16px;border-radius:50%;border:1px solid #e1b9b9;background:#fff;color:#c94a4a;font-size:10px;display:none;align-items:center;justify-content:center;cursor:pointer}
 .vm-cross-tape:hover .vm-cross-remove{display:flex}
 
