@@ -26,7 +26,7 @@ function vmSetShelfType(mi,si,type){
 }
 function vmToggleCross(mi,si,on){
   const s=state.modules[mi].shelves[si];vmEnsureShelfMeta(s);s.__crossTape=typeof on==='boolean'?on:!s.__crossTape;
-  renderAll();renderProperties();toast(s.__crossTape?'Fita Cross inserida neste nível.':'Fita Cross removida.');
+  renderAll();renderProperties();toast(s.__crossTape?'Fita Cross inserida na divisória do módulo.':'Fita Cross removida.');
 }
 function vmInsertShelf(mi,si,where){
   const m=state.modules[mi];if(m.shelves.length>=7){toast('Limite do MVP: 7 níveis por módulo.');return}
@@ -39,8 +39,8 @@ function vmAddHookLevel(mi){
 function vmAddCrossToModule(mi){
   const m=state.modules[mi];
   let si=m.shelves.findIndex(s=>{vmEnsureShelfMeta(s);return !s.__crossTape});
-  if(si<0){toast('Todos os níveis deste módulo já possuem Fita Cross.');return}
-  m.shelves[si].__crossTape=true;renderAll();renderProperties();toast(`Fita Cross adicionada ao nível ${si+1} do Módulo ${String(mi+1).padStart(2,'0')}.`);
+  if(si<0){toast('Este módulo já atingiu o limite de Fitas Cross configuradas no MVP.');return}
+  m.shelves[si].__crossTape=true;renderAll();renderProperties();toast(`Fita Cross adicionada à divisória do Módulo ${String(mi+1).padStart(2,'0')}.`);
 }
 function vmRemoveShelf(mi,si){
   const m=state.modules[mi];if(m.shelves.length<=2){toast('O módulo deve manter ao menos 2 níveis.');return}
@@ -57,7 +57,7 @@ function vmModuleMenu(mi,e){
     <button data-a="hooks">⌗ Converter todos os níveis em gancheiras</button>
     <button data-a="shelf">▤ Restaurar todas as prateleiras</button>
     <button data-a="clearCross">│ Remover todas as Fitas Cross</button>
-    <hr><div class="vm-menu-note">${m.shelves.length} níveis • ${hooks} gancheiras • ${cross} Fitas Cross. Para escolher um nível específico, use o menu ⋮ da própria prateleira.</div>`,e.clientX,e.clientY);
+    <hr><div class="vm-menu-note">${m.shelves.length} níveis • ${hooks} gancheiras • ${cross} Fitas Cross. A Fita Cross é posicionada na divisória vertical do módulo, sem ocupar a frente da prateleira.</div>`,e.clientX,e.clientY);
   menu.querySelector('[data-a="add"]').onclick=()=>vmInsertShelf(mi,m.shelves.length-1,'below');
   menu.querySelector('[data-a="addHook"]').onclick=()=>vmAddHookLevel(mi);
   menu.querySelector('[data-a="addCross"]').onclick=()=>vmAddCrossToModule(mi);
@@ -73,7 +73,7 @@ function vmShelfMenu(mi,si,e){
     <button data-a="cross">│ ${s.__crossTape?'Remover':'Inserir'} Fita Cross</button>
     <hr><button data-a="above">↑ Inserir nível acima</button><button data-a="below">↓ Inserir nível abaixo</button>
     <button class="danger" data-a="remove">⌫ Remover este nível</button>
-    <div class="vm-menu-note">Gancheiras usam suporte frontal com etiqueta reduzida. Fita Cross mantém uma única etiqueta reduzida no topo.</div>`,e.clientX,e.clientY);
+    <div class="vm-menu-note">A Fita Cross fica fisicamente na divisória vertical do módulo e desce pela gôndola; este nível serve como vínculo do produto/etiqueta.</div>`,e.clientX,e.clientY);
   menu.querySelector('[data-a="shelf"]').onclick=()=>vmSetShelfType(mi,si,'shelf');
   menu.querySelector('[data-a="hooks"]').onclick=()=>vmSetShelfType(mi,si,'hooks');
   menu.querySelector('[data-a="cross"]').onclick=()=>vmToggleCross(mi,si);
@@ -81,11 +81,11 @@ function vmShelfMenu(mi,si,e){
   menu.querySelector('[data-a="below"]').onclick=()=>vmInsertShelf(mi,si,'below');
   menu.querySelector('[data-a="remove"]').onclick=()=>vmRemoveShelf(mi,si);
 }
-function vmCrossMarkup(mi,si,s){
+function vmCrossMarkup(mi,si,s,index,side){
   if(!s.__crossTape)return'';
   const p=s.length?products.find(x=>x.id===s[0].productId):null;
   const label=p?.short||'PRODUTO';
-  return `<div class="vm-cross-tape" data-mi="${mi}" data-si="${si}" title="Fita Cross"><div class="vm-cross-track"></div><div class="vm-cross-label">${label}<br>${p?money(p.price):'R$'}</div><div class="vm-cross-unit u1">${label}</div><div class="vm-cross-unit u2">${label}</div><div class="vm-cross-unit u3">${label}</div><button class="vm-cross-remove" title="Remover Fita Cross">×</button></div>`;
+  return `<div class="vm-cross-tape vm-cross-${side}" data-mi="${mi}" data-si="${si}" data-cross-index="${index}" title="Fita Cross • divisória do módulo"><div class="vm-cross-track"></div><div class="vm-cross-label">${label}<br>${p?money(p.price):'R$'}</div><div class="vm-cross-unit u1">${label}</div><div class="vm-cross-unit u2">${label}</div><div class="vm-cross-unit u3">${label}</div><div class="vm-cross-unit u4">${label}</div><div class="vm-cross-unit u5">${label}</div><button class="vm-cross-remove" title="Remover Fita Cross">×</button></div>`;
 }
 function vmDecorateGondola(){
   vmEnsureAllMeta();const stage=$('gondolaStage');if(!stage)return;
@@ -102,8 +102,18 @@ function vmDecorateGondola(){
       let badge=shelf.querySelector('.vm-level-badge');if(!badge){badge=document.createElement('span');badge.className='vm-level-badge';shelf.appendChild(badge)}
       badge.textContent=meta.__displayType==='hooks'?'GANCHEIRA':'PRATELEIRA';
       if(!shelf.querySelector('.vm-level-trigger')){const b=document.createElement('button');b.className='vm-level-trigger';b.title='Planejamento deste nível';b.textContent='⋮';b.onclick=e=>vmShelfMenu(mi,si,e);shelf.appendChild(b)}
-      const old=shelf.querySelector('.vm-cross-tape');if(old)old.remove();
-      if(meta.__crossTape){shelf.insertAdjacentHTML('beforeend',vmCrossMarkup(mi,si,meta));const cross=shelf.querySelector('.vm-cross-tape');cross.querySelector('.vm-cross-remove').onclick=e=>{e.stopPropagation();vmToggleCross(mi,si,false)}}
+      shelf.querySelectorAll('.vm-cross-tape').forEach(x=>x.remove());
+    });
+
+    /* A Fita Cross pertence visualmente à DIVISÓRIA do módulo, não à prateleira. */
+    mod.querySelectorAll(':scope > .vm-cross-tape').forEach(x=>x.remove());
+    const crossShelves=state.modules[mi].shelves.map((s,si)=>({s,si})).filter(x=>{vmEnsureShelfMeta(x.s);return x.s.__crossTape});
+    crossShelves.forEach(({s,si},index)=>{
+      const side='right';
+      mod.insertAdjacentHTML('beforeend',vmCrossMarkup(mi,si,s,index,side));
+    });
+    mod.querySelectorAll(':scope > .vm-cross-tape .vm-cross-remove').forEach(b=>b.onclick=e=>{
+      e.stopPropagation();const cross=b.closest('.vm-cross-tape');vmToggleCross(+cross.dataset.mi,+cross.dataset.si,false);
     });
   });
 }
@@ -117,7 +127,7 @@ renderProperties=function(){
   vmBaseRenderProperties();const c=$('propertiesContent');if(!c||state.selected)return;
   const hooks=state.modules.reduce((n,m)=>n+m.shelves.filter(s=>{vmEnsureShelfMeta(s);return s.__displayType==='hooks'}).length,0);
   const cross=state.modules.reduce((n,m)=>n+m.shelves.filter(s=>{vmEnsureShelfMeta(s);return s.__crossTape}).length,0);
-  c.insertAdjacentHTML('beforeend',`<div class="property-group"><h4>Planejamento estrutural</h4><div class="vm-structure-summary"><div class="vm-structure-card"><span>Módulos</span><strong>${state.modules.length}</strong></div><div class="vm-structure-card"><span>Gancheiras</span><strong>${hooks}</strong></div><div class="vm-structure-card"><span>Fitas Cross</span><strong>${cross}</strong></div><div class="vm-structure-card"><span>Base visual</span><strong>v0.9</strong></div></div><div class="vm-structure-note">No ⋮ do módulo você pode adicionar diretamente prateleira, gancheira ou Fita Cross. Para posicionamento específico, use ⋮ no nível desejado.</div></div>`);
+  c.insertAdjacentHTML('beforeend',`<div class="property-group"><h4>Planejamento estrutural</h4><div class="vm-structure-summary"><div class="vm-structure-card"><span>Módulos</span><strong>${state.modules.length}</strong></div><div class="vm-structure-card"><span>Gancheiras</span><strong>${hooks}</strong></div><div class="vm-structure-card"><span>Fitas Cross</span><strong>${cross}</strong></div><div class="vm-structure-card"><span>Base visual</span><strong>v0.9</strong></div></div><div class="vm-structure-note">A Fita Cross agora é representada na divisória vertical do módulo e percorre a altura útil da gôndola, sem sobrepor as frentes de produtos.</div></div>`);
 };
 
 renderAll();renderProperties();
