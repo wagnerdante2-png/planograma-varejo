@@ -1,240 +1,53 @@
-const products=[
-{id:'p1',name:'Refrigerante Cola 2L',short:'Refrigerante',brand:'Marca Alfa',category:'bebidas',shape:'bottle',price:8.99,volume:'2 L',width:34,height:72,color:'dark'},
-{id:'p2',name:'Refrigerante Guaraná 2L',short:'Guaraná',brand:'Marca Beta',category:'bebidas',shape:'bottle',price:7.49,volume:'2 L',width:34,height:72,color:'dark'},
-{id:'p3',name:'Refrigerante Laranja 2L',short:'Laranja',brand:'Marca Gama',category:'bebidas',shape:'bottle',price:6.99,volume:'2 L',width:34,height:72,color:'dark'},
-{id:'p4',name:'Refrigerante Cola Lata',short:'Cola lata',brand:'Marca Alfa',category:'bebidas',shape:'can',price:4.79,volume:'350 ml',width:37,height:60,color:'dark'},
-{id:'p5',name:'Energético Lata',short:'Energético',brand:'Marca Delta',category:'bebidas',shape:'can',price:9.49,volume:'473 ml',width:37,height:60,color:'dark'},
-{id:'p6',name:'Água Mineral',short:'Água',brand:'Marca Fonte',category:'bebidas',shape:'bottle',price:2.49,volume:'500 ml',width:28,height:60,color:'dark'},
-{id:'p7',name:'Salgadinho Queijo',short:'Salgadinho',brand:'Marca Croc',category:'mercearia',shape:'bag',price:6.49,volume:'90 g',width:50,height:63,color:'dark'},
-{id:'p8',name:'Salgadinho Churrasco',short:'Salgadinho',brand:'Marca Croc',category:'mercearia',shape:'bag',price:6.99,volume:'90 g',width:50,height:63,color:'dark'},
-{id:'p9',name:'Biscoito Recheado',short:'Biscoito',brand:'Marca Doce',category:'mercearia',shape:'bag',price:4.29,volume:'120 g',width:48,height:60,color:'dark'},
-{id:'p10',name:'Caixa de Bombons',short:'Bombons',brand:'Marca Cacau',category:'mercearia',shape:'box',price:12.90,volume:'250 g',width:46,height:60,color:'dark'},
-{id:'p11',name:'Café Tradicional',short:'Café',brand:'Marca Serra',category:'mercearia',shape:'bag',price:17.90,volume:'500 g',width:48,height:64,color:'dark'},
-{id:'p12',name:'Maionese',short:'Maionese',brand:'Marca Casa',category:'mercearia',shape:'jar',price:8.39,volume:'500 g',width:43,height:53,color:'dark'}
-];
+const sectors=['Alimentos','Lazer','Casa Organizar','Casa Decorar','Cozinha Servir','Cozinha Preparar','Cozinha Organizar','Brinquedos','Papelaria','Banheiro','Limpeza','Datas Comemorativas','Elétrica','Ferramentas','Petshop','Eletroportáteis','Perfumaria','Quarto','Outros','Promo','Lavanderia','Artigos para Bebê','Natal'];
 
-const state={
- selected:null,zoom:1,filter:'all',search:'',name:'Bebidas • Refrigerantes 2L',
- modules:Array.from({length:3},()=>({poster:null,shelves:Array.from({length:5},()=>[])}))
+const catalogBySector={
+'Alimentos':[
+['Arroz 5kg','Arroz','Marca Grão','bag',47,66,23.90,'5 kg'],['Feijão 1kg','Feijão','Marca Campo','bag',44,58,8.49,'1 kg'],['Óleo de Soja','Óleo','Marca Sabor','bottle',33,70,8.40,'900 ml'],['Açúcar Cristal','Açúcar','Marca Doce','bag',46,62,6.90,'5 kg'],['Café Tradicional','Café','Marca Serra','jar',42,48,24.90,'500 g'],['Leite em Pó','Leite','Marca Campo','bag',45,57,18.90,'400 g'],['Macarrão','Macarrão','Marca Massa','bag',50,53,4.49,'500 g'],['Molho de Tomate','Molho','Marca Casa','bag',43,54,3.49,'300 g'],['Farinha','Farinha','Marca Trigo','bag',46,61,5.40,'1 kg'],['Maionese','Maionese','Marca Casa','jar',44,50,8.90,'500 g']],
+'Lazer':[['Bola Esportiva','Bola','Marca Play','roll',52,52,39.90,'UN'],['Garrafa Térmica','Garrafa','Marca Outdoor','bottle',35,69,44.90,'1 L'],['Copo Térmico','Copo','Marca Outdoor','can',38,55,29.90,'500 ml'],['Kit Praia','Kit Praia','Marca Sol','box',52,58,59.90,'UN'],['Lanterna Camping','Lanterna','Marca Aventura','tube',35,61,34.90,'UN'],['Mochila Passeio','Mochila','Marca Trip','bag',50,66,79.90,'UN']],
+'Casa Organizar':[['Caixa Organizadora','Caixa','Marca Ordem','bin',54,55,29.90,'15 L'],['Cesto Multiuso','Cesto','Marca Ordem','bin',52,60,24.90,'12 L'],['Cabide','Cabide','Marca Closet','tool',48,53,12.90,'5 UN'],['Organizador Gaveta','Organizador','Marca Closet','box',53,32,19.90,'UN'],['Saco a Vácuo','Saco','Marca Espaço','bag',48,55,17.90,'UN'],['Colmeia Organizadora','Colmeia','Marca Ordem','box',55,42,22.90,'UN']],
+'Casa Decorar':[['Vaso Decorativo','Vaso','Marca Decor','jar',42,60,29.90,'UN'],['Porta Retrato','Porta retrato','Marca Decor','box',46,58,24.90,'UN'],['Vela Aromática','Vela','Marca Luz','jar',40,45,18.90,'UN'],['Almofada','Almofada','Marca Lar','pillow',57,57,39.90,'UN'],['Cachepô','Cachepô','Marca Decor','jar',46,49,34.90,'UN'],['Enfeite Mesa','Enfeite','Marca Casa','toy',44,54,27.90,'UN']],
+'Cozinha Servir':[['Prato Raso','Prato','Marca Mesa','roll',53,24,12.90,'UN'],['Taça','Taça','Marca Mesa','bottle',33,62,14.90,'UN'],['Caneca','Caneca','Marca Mesa','jar',43,48,16.90,'UN'],['Travessa','Travessa','Marca Mesa','pan',57,33,29.90,'UN'],['Jogo Talheres','Talheres','Marca Chef','box',49,58,39.90,'12 pc'],['Copo','Copo','Marca Mesa','can',37,51,8.90,'UN']],
+'Cozinha Preparar':[['Frigideira','Frigideira','Marca Chef','pan',58,35,49.90,'UN'],['Panela','Panela','Marca Chef','jar',52,48,69.90,'UN'],['Espátula','Espátula','Marca Chef','tool',30,69,12.90,'UN'],['Faca Cozinha','Faca','Marca Chef','tool',29,68,24.90,'UN'],['Tábua Corte','Tábua','Marca Chef','box',53,55,29.90,'UN'],['Assadeira','Assadeira','Marca Forno','pan',58,30,44.90,'UN']],
+'Cozinha Organizar':[['Pote Hermético','Pote','Marca Ordem','jar',46,52,19.90,'1 L'],['Porta Temperos','Temperos','Marca Ordem','jar',44,54,29.90,'6 pc'],['Escorredor','Escorredor','Marca Chef','bin',52,42,24.90,'UN'],['Organizador Talheres','Talheres','Marca Ordem','box',54,33,22.90,'UN'],['Porta Mantimentos','Mantimentos','Marca Ordem','jar',47,62,28.90,'2 L'],['Suporte Tampas','Suporte','Marca Ordem','tool',42,58,18.90,'UN']],
+'Brinquedos':[['Carrinho','Carrinho','Marca Kids','toy',51,43,29.90,'UN'],['Boneca','Boneca','Marca Kids','toy',44,65,49.90,'UN'],['Blocos Montar','Blocos','Marca Kids','box',53,55,39.90,'UN'],['Jogo Educativo','Jogo','Marca Saber','box',51,58,34.90,'UN'],['Bola Infantil','Bola','Marca Kids','roll',52,52,19.90,'UN'],['Pelúcia','Pelúcia','Marca Kids','pillow',51,59,44.90,'UN']],
+'Papelaria':[['Caderno','Caderno','Marca Escolar','box',48,60,14.90,'UN'],['Canetas','Canetas','Marca Escolar','tube',35,58,9.90,'6 UN'],['Lápis Cor','Lápis','Marca Escolar','box',45,55,12.90,'12 UN'],['Estojo','Estojo','Marca Escolar','bag',49,40,16.90,'UN'],['Papel Sulfite','Papel','Marca Office','box',52,61,29.90,'500 fl'],['Cola Escolar','Cola','Marca Escolar','bottle',31,59,5.90,'90 g']],
+'Banheiro':[['Toalha Rosto','Toalha','Marca Banho','roll',47,50,19.90,'UN'],['Tapete Banheiro','Tapete','Marca Banho','roll',55,40,24.90,'UN'],['Saboneteira','Saboneteira','Marca Banho','jar',42,45,14.90,'UN'],['Porta Escovas','Escovas','Marca Banho','jar',41,52,16.90,'UN'],['Cesto Roupa','Cesto','Marca Banho','bin',52,63,49.90,'40 L'],['Cortina Box','Cortina','Marca Banho','bag',50,58,39.90,'UN']],
+'Limpeza':[['Detergente','Detergente','Marca Limpa','bottle',31,63,3.49,'500 ml'],['Desinfetante','Desinfetante','Marca Limpa','bottle',35,69,8.90,'2 L'],['Esponja','Esponja','Marca Limpa','box',47,32,4.90,'3 UN'],['Vassoura','Vassoura','Marca Limpa','tool',28,73,19.90,'UN'],['Pano Multiuso','Pano','Marca Limpa','roll',46,49,8.90,'5 UN'],['Balde','Balde','Marca Limpa','bin',52,54,24.90,'12 L']],
+'Datas Comemorativas':[['Balões','Balões','Marca Festa','bag',48,56,12.90,'25 UN'],['Faixa Festa','Faixa','Marca Festa','roll',50,42,9.90,'UN'],['Vela Aniversário','Vela','Marca Festa','tube',34,54,6.90,'UN'],['Prato Festa','Prato','Marca Festa','roll',50,25,8.90,'10 UN'],['Copo Festa','Copo','Marca Festa','can',36,49,7.90,'10 UN'],['Enfeite Festa','Enfeite','Marca Festa','toy',45,56,14.90,'UN']],
+'Elétrica':[['Lâmpada LED','Lâmpada','Marca Luz','bottle',34,55,12.90,'UN'],['Extensão','Extensão','Marca Volt','roll',48,48,29.90,'5 m'],['Tomada','Tomada','Marca Volt','box',42,42,9.90,'UN'],['Pilha','Pilha','Marca Volt','can',31,52,14.90,'4 UN'],['Adaptador','Adaptador','Marca Volt','box',38,40,11.90,'UN'],['Filtro Linha','Filtro linha','Marca Volt','box',53,34,39.90,'UN']],
+'Ferramentas':[['Martelo','Martelo','Marca Forte','tool',42,68,29.90,'UN'],['Alicate','Alicate','Marca Forte','tool',38,65,24.90,'UN'],['Chave Fenda','Chave','Marca Forte','tool',31,68,14.90,'UN'],['Trena','Trena','Marca Forte','roll',43,43,19.90,'5 m'],['Brocas','Brocas','Marca Forte','box',47,50,34.90,'Kit'],['Estilete','Estilete','Marca Forte','tool',31,62,8.90,'UN']],
+'Petshop':[['Ração Cães','Ração','Marca Pet','bag',50,66,49.90,'3 kg'],['Ração Gatos','Ração gato','Marca Pet','bag',48,63,42.90,'3 kg'],['Pote Ração','Pote','Marca Pet','bin',48,39,19.90,'UN'],['Brinquedo Pet','Brinquedo','Marca Pet','toy',45,48,14.90,'UN'],['Shampoo Pet','Shampoo','Marca Pet','bottle',33,61,18.90,'500 ml'],['Tapete Higiênico','Tapete','Marca Pet','box',53,58,39.90,'30 UN']],
+'Eletroportáteis':[['Liquidificador','Liquidificador','Marca Home','jar',49,67,129.90,'UN'],['Sanduicheira','Sanduicheira','Marca Home','box',55,42,99.90,'UN'],['Ferro Passar','Ferro','Marca Home','tool',46,55,89.90,'UN'],['Secador','Secador','Marca Home','tool',48,60,119.90,'UN'],['Mixer','Mixer','Marca Home','tube',32,71,79.90,'UN'],['Cafeteira','Cafeteira','Marca Home','jar',49,64,139.90,'UN']],
+'Perfumaria':[['Shampoo','Shampoo','Marca Care','bottle',32,65,14.90,'350 ml'],['Condicionador','Condicionador','Marca Care','bottle',32,65,16.90,'350 ml'],['Sabonete','Sabonete','Marca Care','box',43,31,4.90,'90 g'],['Creme Corporal','Creme','Marca Care','tube',37,59,18.90,'200 ml'],['Desodorante','Desodorante','Marca Care','can',35,61,12.90,'150 ml'],['Escova Dental','Escova','Marca Care','tool',31,68,9.90,'UN']],
+'Quarto':[['Travesseiro','Travesseiro','Marca Sono','pillow',58,48,39.90,'UN'],['Jogo Lençol','Lençol','Marca Sono','bag',52,56,89.90,'UN'],['Cobertor','Cobertor','Marca Sono','roll',54,49,99.90,'UN'],['Fronha','Fronha','Marca Sono','bag',49,45,19.90,'UN'],['Manta','Manta','Marca Sono','roll',52,46,69.90,'UN'],['Protetor Colchão','Protetor','Marca Sono','bag',53,58,79.90,'UN']],
+'Outros':[['Produto Diverso A','Diverso A','Marca Genérica','box',48,55,19.90,'UN'],['Produto Diverso B','Diverso B','Marca Genérica','jar',43,52,24.90,'UN'],['Produto Diverso C','Diverso C','Marca Genérica','bag',49,58,29.90,'UN'],['Produto Diverso D','Diverso D','Marca Genérica','tube',36,61,14.90,'UN']],
+'Promo':[['Oferta A','Oferta A','Marca Promo','box',50,58,9.90,'UN'],['Oferta B','Oferta B','Marca Promo','bag',49,60,14.90,'UN'],['Oferta C','Oferta C','Marca Promo','bottle',34,66,19.90,'UN'],['Oferta D','Oferta D','Marca Promo','jar',44,53,24.90,'UN']],
+'Lavanderia':[['Cesto Roupa','Cesto roupa','Marca Lavanderia','bin',53,64,49.90,'45 L'],['Pregador','Pregador','Marca Lavanderia','box',46,42,9.90,'24 UN'],['Varal','Varal','Marca Lavanderia','tool',49,57,39.90,'UN'],['Capa Tábua','Capa tábua','Marca Lavanderia','bag',50,56,29.90,'UN'],['Organizador','Organizador','Marca Lavanderia','bin',52,52,24.90,'UN'],['Borrifador','Borrifador','Marca Lavanderia','bottle',33,61,12.90,'500 ml']],
+'Artigos para Bebê':[['Mamadeira','Mamadeira','Marca Baby','bottle',33,62,24.90,'250 ml'],['Copo Infantil','Copo baby','Marca Baby','can',38,49,19.90,'UN'],['Prato Infantil','Prato baby','Marca Baby','roll',49,26,16.90,'UN'],['Babador','Babador','Marca Baby','bag',47,50,14.90,'UN'],['Pote Papinha','Pote baby','Marca Baby','jar',42,47,12.90,'UN'],['Escova Mamadeira','Escova baby','Marca Baby','tool',31,65,11.90,'UN']],
+'Natal':[['Bola Natalina','Bola natal','Marca Natal','roll',48,48,12.90,'6 UN'],['Pisca Pisca','Pisca','Marca Natal','roll',48,43,29.90,'100 LED'],['Enfeite Árvore','Enfeite','Marca Natal','toy',44,55,19.90,'UN'],['Guirlanda','Guirlanda','Marca Natal','roll',54,54,49.90,'UN'],['Laço Natalino','Laço','Marca Natal','bag',45,48,9.90,'UN'],['Mini Árvore','Árvore','Marca Natal','tool',48,68,59.90,'UN']]
 };
 
-function uid(){return Math.random().toString(36).slice(2,9)}
-function byId(id){return document.getElementById(id)}
-function money(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
-function toast(msg){const t=byId('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+let idSeq=1;const products=[];
+for(const [sector,rows] of Object.entries(catalogBySector)) rows.forEach(r=>products.push({id:`p${idSeq++}`,sector,name:r[0],short:r[1],brand:r[2],shape:r[3],width:r[4],height:r[5],price:r[6],volume:r[7]}));
 
-function productShape(p,label=true){return `<div class="generic-product ${p.shape}" style="width:${p.width}px;height:${p.height}px"><span>${label?p.short:''}</span></div>`}
+const state={sector:'Alimentos',search:'',selected:null,zoom:1,modules:Array.from({length:3},()=>({shelves:Array.from({length:5},()=>[])}))};
+const $=id=>document.getElementById(id);const money=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});const uid=()=>Math.random().toString(36).slice(2,9);
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function shape(p){return `<div class="generic-product ${p.shape}" style="width:${p.width}px;height:${p.height}px"><span>${p.short}</span></div>`}
+function currentProducts(){const q=state.search.toLowerCase();return products.filter(p=>p.sector===state.sector&&(!q||`${p.name} ${p.brand}`.toLowerCase().includes(q)))}
+function renderSectorMenu(){$('sectorMenu').innerHTML=sectors.map(s=>`<button class="sector-option ${s===state.sector?'active':''}" data-sector="${s}">${s}</button>`).join('');$('sectorMenu').querySelectorAll('button').forEach(b=>b.onclick=()=>{state.sector=b.dataset.sector;$('sectorLabel').textContent=state.sector;$('sectorMetric').textContent=state.sector;$('sectorMenu').classList.add('hidden');renderCatalog();seedSector()})}
+function renderCatalog(){const list=currentProducts();$('productCatalog').innerHTML=list.map(p=>`<div class="product-card" draggable="true" data-id="${p.id}"><div class="catalog-visual">${shape(p)}</div><strong>${p.short}</strong><span>${p.brand}</span></div>`).join('');$('productCatalog').querySelectorAll('.product-card').forEach(el=>{el.ondragstart=e=>{e.dataTransfer.setData('product',el.dataset.id)};el.ondblclick=()=>addProduct(el.dataset.id)})}
+function addProduct(pid){const slots=state.modules.flatMap((m,mi)=>m.shelves.map((s,si)=>({s,mi,si}))).sort((a,b)=>a.s.length-b.s.length);slots[0].s.push({instanceId:uid(),productId:pid,promo:state.sector==='Promo'});renderAll()}
+function findInstance(id){for(let mi=0;mi<state.modules.length;mi++)for(let si=0;si<5;si++){const idx=state.modules[mi].shelves[si].findIndex(x=>x.instanceId===id);if(idx>=0)return{mi,si,idx,item:state.modules[mi].shelves[si][idx]}}}
+function renderGondola(){const stage=$('gondolaStage');stage.style.transform=`scale(${state.zoom})`;stage.innerHTML=state.modules.map((m,mi)=>`<div class="gondola-module"><div class="module-title">MÓDULO ${String(mi+1).padStart(2,'0')}</div>${m.shelves.map((s,si)=>`<div class="shelf" data-mi="${mi}" data-si="${si}">${s.map(it=>{const p=products.find(x=>x.id===it.productId);return `<div class="placed ${state.selected===it.instanceId?'selected':''}" draggable="true" data-instance="${it.instanceId}">${shape(p)}<div class="price-tag ${it.promo?'pink':''}">${it.promo?'OFERTA ':''}${money(p.price)}</div></div>`}).join('')}</div>`).join('')}</div>`).join('');stage.querySelectorAll('.shelf').forEach(s=>{s.ondragover=e=>{e.preventDefault();s.classList.add('drop')};s.ondragleave=()=>s.classList.remove('drop');s.ondrop=e=>{e.preventDefault();s.classList.remove('drop');const pid=e.dataTransfer.getData('product'),inst=e.dataTransfer.getData('instance');const mi=+s.dataset.mi,si=+s.dataset.si;if(pid)state.modules[mi].shelves[si].push({instanceId:uid(),productId:pid,promo:state.sector==='Promo'});if(inst)moveInstance(inst,mi,si);renderAll()}});stage.querySelectorAll('.placed').forEach(el=>{el.ondragstart=e=>e.dataTransfer.setData('instance',el.dataset.instance);el.onclick=()=>{state.selected=el.dataset.instance;renderAll();renderProperties()};el.ondblclick=()=>openModal(el.dataset.instance)})}
+function moveInstance(id,mi,si){let moved;state.modules.forEach(m=>m.shelves.forEach(s=>{const i=s.findIndex(x=>x.instanceId===id);if(i>=0)moved=s.splice(i,1)[0]}));if(moved)state.modules[mi].shelves[si].push(moved)}
+function renderProperties(){const c=$('propertiesContent');if(!state.selected){c.innerHTML=`<div class="properties-empty">Selecione um produto da gôndola para editar posição, etiqueta e frentes.</div><div class="property-group"><h4>Setor ativo</h4><div class="property-item"><span>Classificação mercadológica</span><strong>${state.sector}</strong></div></div>`;return}const f=findInstance(state.selected);if(!f)return;const p=products.find(x=>x.id===f.item.productId);c.innerHTML=`<div class="property-group"><h4>${p.name}</h4><div class="property-grid"><div class="property-item"><span>Marca</span><strong>${p.brand}</strong></div><div class="property-item"><span>Preço</span><strong>${money(p.price)}</strong></div><div class="property-item"><span>Volume</span><strong>${p.volume}</strong></div><div class="property-item"><span>Posição</span><strong>M${f.mi+1} • P${f.si+1}</strong></div></div></div><div class="property-group"><h4>Etiqueta</h4><div class="property-actions"><button id="whiteTag" class="propbtn">Branca</button><button id="pinkTag" class="propbtn">Rosa promocional</button></div></div><div class="property-group"><h4>Frentes</h4><div class="property-actions"><button id="dupFront" class="propbtn">＋ Duplicar frente</button><button id="removeItem" class="propbtn danger">Remover</button></div></div>`;$('whiteTag').onclick=()=>{f.item.promo=false;renderAll()};$('pinkTag').onclick=()=>{f.item.promo=true;renderAll()};$('dupFront').onclick=()=>{state.modules[f.mi].shelves[f.si].splice(f.idx+1,0,{...f.item,instanceId:uid()});renderAll()};$('removeItem').onclick=()=>{state.modules[f.mi].shelves[f.si].splice(f.idx,1);state.selected=null;renderAll();renderProperties()}}
+function updateKpis(){const all=state.modules.flatMap(m=>m.shelves.flat());$('facesKpi').textContent=all.length;$('skuKpi').textContent=new Set(all.map(x=>x.productId)).size;$('fillKpi').textContent=`${Math.min(100,Math.round(all.length/75*100))}%`;$('complianceKpi').textContent=all.length?'98%':'100%'}
+function seedSector(){state.selected=null;state.modules.forEach(m=>m.shelves.forEach(s=>s.splice(0)));const pool=currentProducts();state.modules.forEach((m,mi)=>m.shelves.forEach((s,si)=>{const base=pool[(mi+si)%pool.length];const alt=pool[(mi+si+1)%pool.length];for(let i=0;i<5;i++)s.push({instanceId:uid(),productId:(i===4?alt:base).id,promo:state.sector==='Promo'||(state.sector==='Alimentos'&&mi===1&&si===3)})}));renderAll();renderProperties();toast(`Gôndola carregada: ${state.sector}`)}
+function applyStrategy(type){let all=state.modules.flatMap(m=>m.shelves.flat());if(type==='manual'){toast('Modo manual: arraste e solte produtos.');return}const fn=type==='brand'?x=>products.find(p=>p.id===x.productId).brand:type==='price'?x=>products.find(p=>p.id===x.productId).price:type==='size'?x=>parseFloat(products.find(p=>p.id===x.productId).volume):x=>products.find(p=>p.id===x.productId).short;all.sort((a,b)=>{const av=fn(a),bv=fn(b);return typeof av==='number'?av-bv:String(av).localeCompare(String(bv))});state.modules.forEach(m=>m.shelves.forEach(s=>s.splice(0)));all.forEach((it,i)=>state.modules[Math.floor(i/25)%3].shelves[Math.floor((i%25)/5)].push(it));renderAll();toast(type==='auto'?'Auto-planejamento aplicado':'Estratégia aplicada')}
+function renderInsights(){$('insights').innerHTML=[`Setor ${state.sector} aplicado ao catálogo e à gôndola.`,`Produtos usam silhuetas proporcionais e profundidade visual.`,`Etiquetas permanecem vinculadas ao início da exposição.`].map((x,i)=>`<div class="insight"><i>${['⌁','◫','↔'][i]}</i>${x}</div>`).join('')}
+function renderAudit(){$('auditList').innerHTML=['Produto possui posição definida','Perfil porta-preços laranja','Etiqueta associada à exposição','Setor/classificação identificado'].map(x=>`<div class="audit-row ok"><i>✓</i>${x}</div>`).join('')}
+function openModal(id){const f=findInstance(id);if(!f)return;const p=products.find(x=>x.id===f.item.productId);$('modalTitle').textContent=p.name;$('modalBody').innerHTML=`<div class="modal-product"><div class="modal-visual">${shape(p)}</div><div class="detail"><div><span>MARCA</span><strong>${p.brand}</strong></div><div><span>PREÇO</span><strong>${money(p.price)}</strong></div><div><span>CLASSIFICAÇÃO</span><strong>${p.sector}</strong></div><div><span>VOLUME</span><strong>${p.volume}</strong></div><div><span>POSIÇÃO</span><strong>M${f.mi+1} • P${f.si+1}</strong></div><div><span>SKU</span><strong>${p.id.toUpperCase()}</strong></div></div></div>`;$('modal').classList.remove('hidden')}
+function renderAll(){renderCatalog();renderGondola();updateKpis();renderInsights();renderAudit()}
 
-function renderCatalog(){
- const wrap=byId('productCatalog');
- const q=state.search.toLowerCase();
- wrap.innerHTML=products.filter(p=>(state.filter==='all'||p.category===state.filter)&&(!q||`${p.name} ${p.brand} ${p.category}`.toLowerCase().includes(q))).map(p=>`
- <div class="catalog-item" draggable="true" data-product-id="${p.id}">
-   <div class="catalog-visual">${productShape(p)}</div><strong>${p.short}</strong><span>${p.brand}</span>
- </div>`).join('');
- wrap.querySelectorAll('.catalog-item').forEach(el=>{
-   el.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/product',el.dataset.productId);e.dataTransfer.effectAllowed='copy'});
-   el.addEventListener('dblclick',()=>addToFirstSpace(el.dataset.productId));
- });
-}
-
-function makePlaced(p,item){
- return `<div class="placed-item ${state.selected===item.instanceId?'selected':''}" draggable="true" data-instance="${item.instanceId}" data-product-id="${p.id}" title="${p.name}">
- ${productShape(p)}<div class="price-tag ${item.promo?'pink':''}">${item.promo?'OFERTA ':''}${money(p.price)}</div></div>`;
-}
-
-function renderGondola(){
- const stage=byId('gondolaStage');
- stage.style.transform=`scale(${state.zoom})`;
- stage.innerHTML=state.modules.map((m,mi)=>`
- <div class="gondola-module" data-module="${mi}"><div class="module-title">MÓDULO ${String(mi+1).padStart(2,'0')}</div>
- ${m.poster?`<div class="module-poster" data-poster="${mi}"><div>${m.poster.type}<strong>${m.poster.size}</strong>Preço em destaque</div></div>`:''}
- ${m.shelves.map((items,si)=>`<div class="shelf" data-module="${mi}" data-shelf="${si}">${items.map(it=>makePlaced(products.find(p=>p.id===it.productId),it)).join('')}</div>`).join('')}
- </div>`).join('');
-
- stage.querySelectorAll('.shelf').forEach(shelf=>{
-  shelf.addEventListener('dragover',e=>{e.preventDefault();shelf.classList.add('drop-hover')});
-  shelf.addEventListener('dragleave',()=>shelf.classList.remove('drop-hover'));
-  shelf.addEventListener('drop',e=>{
-   e.preventDefault();shelf.classList.remove('drop-hover');
-   const mi=+shelf.dataset.module,si=+shelf.dataset.shelf;
-   const pid=e.dataTransfer.getData('text/product');
-   const instance=e.dataTransfer.getData('text/instance');
-   if(pid){state.modules[mi].shelves[si].push({instanceId:uid(),productId:pid,promo:false});}
-   else if(instance){moveInstance(instance,mi,si)}
-   renderAll();
-  });
- });
- stage.querySelectorAll('.placed-item').forEach(el=>{
-  el.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/instance',el.dataset.instance);e.dataTransfer.effectAllowed='move'});
-  el.addEventListener('click',e=>{e.stopPropagation();state.selected=el.dataset.instance;renderAll();renderProperties();});
-  el.addEventListener('dblclick',e=>{e.stopPropagation();openProductModal(el.dataset.instance)});
- });
- stage.querySelectorAll('.module-poster').forEach(el=>el.addEventListener('click',()=>toast('Cartaz selecionado • use Padrões & Regras para conferir conformidade.')));
- updateKpis();
-}
-
-function moveInstance(instance,mi,si){
- let moved=null;
- state.modules.forEach(m=>m.shelves.forEach(s=>{const idx=s.findIndex(i=>i.instanceId===instance);if(idx>=0)moved=s.splice(idx,1)[0]}));
- if(moved)state.modules[mi].shelves[si].push(moved);
-}
-
-function addToFirstSpace(pid){
- let target=state.modules.flatMap((m,mi)=>m.shelves.map((s,si)=>({s,mi,si}))).sort((a,b)=>a.s.length-b.s.length)[0];
- target.s.push({instanceId:uid(),productId:pid,promo:false});renderAll();toast('Produto adicionado ao planograma');
-}
-
-function findInstance(instance){
- for(let mi=0;mi<state.modules.length;mi++)for(let si=0;si<state.modules[mi].shelves.length;si++){const idx=state.modules[mi].shelves[si].findIndex(i=>i.instanceId===instance);if(idx>=0)return{mi,si,idx,item:state.modules[mi].shelves[si][idx]}}
- return null;
-}
-
-function renderProperties(){
- const target=byId('propertiesContent');
- if(!state.selected){target.innerHTML=`<div class="properties-empty">Selecione um produto da gôndola para editar posição, etiqueta, frente e dados do SKU.</div><div class="property-group"><h4>Estrutura da gôndola</h4><div class="property-grid"><div class="property-item"><span>Módulos</span><strong>3</strong></div><div class="property-item"><span>Prateleiras</span><strong>5 / módulo</strong></div><div class="property-item"><span>Perfil</span><strong>Laranja</strong></div><div class="property-item"><span>Fundo</span><strong>Branco</strong></div></div></div>`;return}
- const f=findInstance(state.selected);if(!f)return;
- const p=products.find(x=>x.id===f.item.productId);
- target.innerHTML=`<div class="property-group"><h4>${p.name}</h4><div class="property-grid"><div class="property-item"><span>Marca</span><strong>${p.brand}</strong></div><div class="property-item"><span>Preço</span><strong>${money(p.price)}</strong></div><div class="property-item"><span>Volume</span><strong>${p.volume}</strong></div><div class="property-item"><span>Posição</span><strong>M${f.mi+1} • P${f.si+1}</strong></div></div></div>
- <div class="property-group"><h4>Etiqueta</h4><div class="property-actions"><button class="secondary-btn" id="whiteTagBtn">Branca</button><button class="secondary-btn" id="pinkTagBtn">Rosa promocional</button></div></div>
- <div class="property-group"><h4>Frentes</h4><div class="property-actions"><button class="secondary-btn" id="duplicateBtn">＋ Duplicar frente</button></div><p style="font-size:8px;color:#8a95a3">A duplicação representa novas frentes físicas do mesmo SKU. A etiqueta continua vinculada ao início da exposição.</p></div>
- <div class="property-actions"><button class="danger-btn" id="removeBtn">Remover do layout</button></div>`;
- byId('whiteTagBtn').onclick=()=>{f.item.promo=false;renderAll()};
- byId('pinkTagBtn').onclick=()=>{f.item.promo=true;renderAll()};
- byId('duplicateBtn').onclick=()=>{state.modules[f.mi].shelves[f.si].splice(f.idx+1,0,{...f.item,instanceId:uid()});renderAll()};
- byId('removeBtn').onclick=()=>{state.modules[f.mi].shelves[f.si].splice(f.idx,1);state.selected=null;renderAll();renderProperties()};
-}
-
-function updateKpis(){
- const all=state.modules.flatMap(m=>m.shelves.flat());
- const skus=new Set(all.map(i=>i.productId)).size;
- const capacity=75,faces=all.length;
- byId('facesKpi').textContent=faces;
- byId('skuKpi').textContent=skus;
- byId('fillKpi').textContent=`${Math.min(100,Math.round(faces/capacity*100))}%`;
- const audit=runAudit(false);byId('complianceKpi').textContent=`${audit.score}%`;
-}
-
-function seedPreset(type){
- state.modules.forEach(m=>{m.poster=null;m.shelves.forEach(s=>s.splice(0))});
- const pool=type==='snacks'?['p7','p8','p9','p10','p11','p12']:type==='mixed'?['p1','p4','p5','p7','p9','p10','p11','p12']:['p1','p2','p3','p4','p5','p6'];
- state.modules.forEach((m,mi)=>m.shelves.forEach((s,si)=>{
-   const base=pool[(si+mi)%pool.length];const count=si===4?4:5;
-   for(let i=0;i<count;i++)s.push({instanceId:uid(),productId:i<count-1?base:pool[(si+mi+1)%pool.length],promo:(mi===1&&si===2)});
- }));
- if(type==='softdrinks')state.modules[1].poster={size:'A4',type:'OFERTA'};
- renderAll();
-}
-
-function applyStrategy(){
- const type=byId('strategySelect').value;
- if(type==='manual'){toast('Modo manual ativo: arraste os produtos diretamente para as prateleiras.');return}
- let all=state.modules.flatMap(m=>m.shelves.flat());
- const key={brand:(it)=>products.find(p=>p.id===it.productId).brand,price:(it)=>products.find(p=>p.id===it.productId).price,size:(it)=>parseFloat(products.find(p=>p.id===it.productId).volume),auto:(it)=>products.find(p=>p.id===it.productId).brand}[type];
- all.sort((a,b)=>{const av=key(a),bv=key(b);return typeof av==='number'?av-bv:String(av).localeCompare(String(bv))});
- state.modules.forEach(m=>m.shelves.forEach(s=>s.splice(0)));
- all.forEach((it,i)=>{const mi=Math.floor(i/25)%3,si=Math.floor((i%25)/5);state.modules[mi].shelves[si].push(it)});
- if(type==='auto')balanceAuto();
- renderAll();toast(type==='auto'?'Auto-planejamento aplicado com balanceamento de frentes.':'Estratégia aplicada ao planograma.');
-}
-
-function balanceAuto(){
- state.modules.forEach(m=>m.shelves.forEach(s=>{
-  const unique=[...new Map(s.map(x=>[x.productId,x])).values()];
-  while(s.length<5&&unique.length)s.push({...unique[s.length%unique.length],instanceId:uid()});
- }));
-}
-
-function runAudit(show=true){
- const all=state.modules.flatMap(m=>m.shelves.flat());
- const issues=[];
- if(!all.length)issues.push('Planograma sem produtos');
- const posters=state.modules.filter(m=>m.poster).length;
- if(posters>3)issues.push('Excesso de cartazes');
- const missingLabels=0;
- const promoCount=all.filter(i=>i.promo).length;
- let score=Math.max(72,100-issues.length*12-(missingLabels*4));
- if(promoCount>0)score-=2;
- const rows=[
- {ok:all.length>0,text:'Produtos possuem posição definida por módulo e prateleira'},
- {ok:true,text:'Perfil porta-preços configurado na cor laranja'},
- {ok:posters<=3,text:'Limite de até 3 cartazes por módulo'},
- {ok:true,text:'Etiqueta associada ao início da exposição do SKU'},
- {ok:true,text:'Cartaz não substitui a etiqueta de gôndola'}
- ];
- byId('auditChecklist').innerHTML=rows.map(r=>`<div class="audit-row ${r.ok?'ok':'warn'}"><i>${r.ok?'✓':'!'}</i>${r.text}</div>`).join('');
- if(show)toast(`Auditoria simulada concluída • ${score}% de conformidade`);
- return{score,issues};
-}
-
-function renderInsights(){
- byId('insightList').innerHTML=[
-  ['↔','Boa distribuição horizontal de frentes entre os módulos.'],
-  ['◫','Produtos promocionais destacados com etiqueta rosa neon.'],
-  ['⌁','Espaços vazios permanecem visíveis para ajuste manual do VM.'],
-  ['◎','Clique duas vezes em um item para abrir ficha detalhada.']
- ].map(x=>`<div class="insight-row"><i>${x[0]}</i>${x[1]}</div>`).join('');
-}
-
-function openProductModal(instance){
- const f=findInstance(instance);if(!f)return;const p=products.find(x=>x.id===f.item.productId);
- byId('modalTitle').textContent=p.name;
- byId('productModalBody').innerHTML=`<div class="product-modal-grid"><div class="product-hero">${productShape(p)}</div><div><div class="detail-grid"><div class="detail-cell"><span>MARCA</span><strong>${p.brand}</strong></div><div class="detail-cell"><span>PREÇO</span><strong>${money(p.price)}</strong></div><div class="detail-cell"><span>VOLUME</span><strong>${p.volume}</strong></div><div class="detail-cell"><span>POSIÇÃO</span><strong>Módulo ${f.mi+1} / Prateleira ${f.si+1}</strong></div><div class="detail-cell"><span>SKU</span><strong>GEN-${p.id.toUpperCase()}</strong></div><div class="detail-cell"><span>ETIQUETA</span><strong>${f.item.promo?'Rosa promocional':'Branca padrão'}</strong></div></div><p style="font-size:9px;color:#778493;line-height:1.55;margin-top:12px">Produto genérico para prototipação. Em produção, dimensões, preço, EAN, estoque, giro, margem e cadastro podem ser alimentados pelo ERP.</p></div></div>`;
- byId('productModal').classList.remove('hidden');
-}
-
-function renderAuditDashboard(){
- const stores=[['ML01','Campinas Centro',98,1,0],['ML05','Jundiaí',94,3,1],['ML12','Sorocaba',88,7,2],['ML18','Itu',96,2,0],['ML26','Indaiatuba',91,4,1],['ML34','Campinas Norte',83,9,3]];
- byId('auditDashboard').innerHTML=stores.map(s=>`<article class="store-card"><div class="store-card-head"><div><h3>${s[0]}</h3><p>${s[1]} • Layout v0.1</p></div><div class="score-ring" style="--score:${s[2]}%"><strong>${s[2]}%</strong></div></div><div class="store-metrics"><div><span>DIVERGÊNCIAS</span><strong>${s[3]}</strong></div><div><span>CRÍTICAS</span><strong>${s[4]}</strong></div><div><span>ÚLTIMA AUDITORIA</span><strong>Hoje</strong></div></div></article>`).join('');
-}
-
-function renderStandards(){
- const rules=[
- ['Etiqueta padrão branca','Modelo institucional principal para a maior parte dos perfis de gôndola. Deve preservar identificação clara do produto e do preço.'],
- ['Etiqueta promocional rosa','Uso restrito a produtos contemplados por dinâmica promocional vigente, com forte destaque visual.'],
- ['Posicionamento da etiqueta','A etiqueta fica no início da exposição, diretamente à esquerda. Quando a prateleira tiver somente um produto, o preço pode ser centralizado.'],
- ['Cartaz + etiqueta','Todo produto cartazeado mantém etiqueta correspondente. O cartaz complementa e não substitui a etiqueta.'],
- ['Limite de cartazes','O cartaz deve ficar dentro da área do produto e o módulo trabalha com mínimo de 1 e máximo de 3 cartazes quando aplicável.'],
- ['Formatos oficiais','A3 para grandes volumes/móveis; A4 para módulos e terminais; A5 para laterais e módulos menores; A6/A7 para frentes reduzidas e gancheiras.']
- ];
- byId('standardsGrid').innerHTML=rules.map((r,i)=>`<article class="standard-card"><div class="num">${String(i+1).padStart(2,'0')}</div><h3>${r[0]}</h3><p>${r[1]}</p></article>`).join('');
-}
-
-function save(){localStorage.setItem('planograma-mvp',JSON.stringify({name:state.name,modules:state.modules}));toast('Rascunho salvo neste navegador')}
-function load(){try{const x=JSON.parse(localStorage.getItem('planograma-mvp'));if(x){state.name=x.name||state.name;state.modules=x.modules||state.modules;byId('planogramName').textContent=state.name}}catch(e){console.warn(e)}}
-
-function renderAll(){renderGondola();renderInsights();renderProperties();runAudit(false)}
-
-function setupNav(){
- document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click',()=>{
-  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
-  ['builder','audit','standards','ai'].forEach(v=>byId(`${v}View`).classList.toggle('hidden',v!==btn.dataset.view));
-  const showBuilder=btn.dataset.view==='builder';document.querySelector('.left-panel').classList.toggle('hidden',!showBuilder);byId('rightPanel').classList.toggle('hidden',!showBuilder);
- }));
-}
-
-function setupEvents(){
- byId('productSearch').addEventListener('input',e=>{state.search=e.target.value;renderCatalog()});
- document.querySelectorAll('.filter-pill').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter-pill').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.filter=b.dataset.filter;renderCatalog()}));
- byId('presetSelect').addEventListener('change',e=>{if(e.target.value!=='custom')seedPreset(e.target.value)});
- byId('applyStrategyBtn').onclick=applyStrategy;
- byId('saveBtn').onclick=save;
- byId('publishBtn').onclick=()=>toast('Layout publicado em modo demonstrativo • pronto para auditoria regional');
- byId('runAuditBtn').onclick=()=>runAudit(true);
- byId('zoomInBtn').onclick=()=>{state.zoom=Math.min(1.25,state.zoom+.1);byId('zoomLabel').textContent=`${Math.round(state.zoom*100)}%`;renderGondola()};
- byId('zoomOutBtn').onclick=()=>{state.zoom=Math.max(.65,state.zoom-.1);byId('zoomLabel').textContent=`${Math.round(state.zoom*100)}%`;renderGondola()};
- byId('clearBtn').onclick=()=>{state.modules.forEach(m=>{m.poster=null;m.shelves.forEach(s=>s.splice(0))});state.selected=null;renderAll();toast('Área de planograma limpa')};
- byId('renamePlanogramBtn').onclick=()=>{const n=prompt('Nome do planograma',state.name);if(n){state.name=n;byId('planogramName').textContent=n}};
- byId('closeProductModal').onclick=()=>byId('productModal').classList.add('hidden');
- byId('closePosterModal').onclick=()=>byId('posterModal').classList.add('hidden');
- byId('confirmPosterBtn').onclick=()=>{const mi=+byId('posterModule').value;state.modules[mi].poster={size:byId('posterSize').value,type:byId('posterType').value};byId('posterModal').classList.add('hidden');renderAll();toast('Cartaz incluído no módulo')};
- document.querySelector('[data-action="poster"]').onclick=()=>byId('posterModal').classList.remove('hidden');
- document.querySelector('[data-action="label-white"]').onclick=()=>{if(!state.selected)return toast('Selecione um produto na gôndola');const f=findInstance(state.selected);f.item.promo=false;renderAll()};
- document.querySelector('[data-action="label-pink"]').onclick=()=>{if(!state.selected)return toast('Selecione um produto na gôndola');const f=findInstance(state.selected);f.item.promo=true;renderAll()};
- document.querySelector('[data-action="separator"]').onclick=()=>toast('Separador visual reservado para a próxima iteração do MVP');
- byId('newProductBtn').onclick=()=>toast('Cadastro manual de SKU reservado para integração futura com ERP');
- byId('aiUploadZone').onclick=()=>toast('Protótipo conceitual: reconhecimento de imagem será conectado em fase futura.');
- window.addEventListener('keydown',e=>{if(e.key==='Delete'&&state.selected){const f=findInstance(state.selected);if(f){state.modules[f.mi].shelves[f.si].splice(f.idx,1);state.selected=null;renderAll()}}});
-}
-
-load();renderCatalog();seedPreset('softdrinks');renderAuditDashboard();renderStandards();setupNav();setupEvents();
+$('sectorButton').onclick=()=>$('sectorMenu').classList.toggle('hidden');document.addEventListener('click',e=>{if(!e.target.closest('.sector-wrap'))$('sectorMenu').classList.add('hidden')});$('searchInput').oninput=e=>{state.search=e.target.value;renderCatalog()};$('zoomIn').onclick=()=>{state.zoom=Math.min(1.2,state.zoom+.1);$('zoomText').textContent=`${Math.round(state.zoom*100)}%`;renderGondola()};$('zoomOut').onclick=()=>{state.zoom=Math.max(.7,state.zoom-.1);$('zoomText').textContent=`${Math.round(state.zoom*100)}%`;renderGondola()};$('clearBtn').onclick=()=>{state.modules.forEach(m=>m.shelves.forEach(s=>s.splice(0)));state.selected=null;renderAll();renderProperties()};document.querySelectorAll('[data-strategy]').forEach(b=>b.onclick=()=>applyStrategy(b.dataset.strategy));$('duplicateModuleBtn').onclick=()=>{state.modules[2]={shelves:state.modules[1].shelves.map(s=>s.map(x=>({...x,instanceId:uid()})))};renderAll();toast('Módulo 02 duplicado para o módulo 03')};$('auditBtn').onclick=()=>toast('Auditoria simulada concluída • 98% de conformidade');$('closeModal').onclick=()=>$('modal').classList.add('hidden');$('modal').onclick=e=>{if(e.target.id==='modal')$('modal').classList.add('hidden')};renderSectorMenu();seedSector();
