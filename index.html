@@ -10,11 +10,12 @@
 <link rel="stylesheet" href="styles.css"/>
 <link rel="stylesheet" href="enhancement-v03.css"/>
 <link rel="stylesheet" href="enhancement-v07.css"/>
+<link rel="stylesheet" href="enhancement-v08.css"/>
 </head>
 <body>
 <header class="topbar">
   <div class="brand"><div class="brandmark">P</div><div><strong>Planograma VM</strong><small>Execução de loja & auditoria visual</small></div></div>
-  <div class="chips"><button class="chip active">Loja Modelo</button><button class="chip">Regional 01</button><button class="chip">Versão 0.7 • Rascunho</button></div>
+  <div class="chips"><button class="chip active">Loja Modelo</button><button class="chip">Regional 01</button><button class="chip">Versão 0.8 • Rascunho</button></div>
   <div class="top-actions"><button class="icon">💾</button><button class="icon">↶</button><button class="publish">Publicar layout</button><div class="avatar">WM</div></div>
 </header>
 <nav class="tabs">
@@ -32,6 +33,7 @@
     </div>
     <div id="productCatalog" class="product-grid"></div>
   </aside>
+
   <main class="workspace">
     <div class="metric-row">
       <div class="metric primary"><small>Setor ativo</small><strong id="sectorMetric">Alimentos</strong><span>classificação mercadológica</span></div>
@@ -40,6 +42,7 @@
       <div class="metric"><small>Aproveitamento</small><strong id="fillKpi">0%</strong><span>espaço horizontal</span></div>
       <div class="metric"><small>Conformidade</small><strong class="good" id="complianceKpi">100%</strong><span>regras simuladas</span></div>
     </div>
+
     <section class="canvas-card">
       <div class="canvas-toolbar">
         <div class="legend"><span><i class="dot orange"></i>Perfil porta-preços</span><span><i class="dot dark"></i>Produto genérico</span><span><i class="dot pink"></i>Promoção</span></div>
@@ -47,6 +50,7 @@
       </div>
       <div class="canvas-scroll"><div id="gondolaStage" class="gondola-stage"></div></div>
     </section>
+
     <div class="strategy-bar">
       <button data-strategy="manual" class="strategy active"><b>✎</b><span><strong>Manual</strong><small>arrasta e solta</small></span></button>
       <button data-strategy="brand" class="strategy"><b>▦</b><span><strong>Agrupar</strong><small>por marca</small></span></button>
@@ -55,16 +59,19 @@
       <button data-strategy="auto" class="strategy"><b>⌁</b><span><strong>Auto</strong><small>planejamento</small></span></button>
       <button id="duplicateModuleBtn" class="strategy"><b>▣</b><span><strong>Duplicar</strong><small>módulo</small></span></button>
     </div>
+
     <div class="info-grid">
       <section class="info-card"><div class="info-title"><div><small>ANÁLISE RÁPIDA</small><h3>Leitura do layout</h3></div><span class="badge">Boa execução</span></div><div id="insights"></div></section>
       <section class="info-card"><div class="info-title"><div><small>AUDITORIA</small><h3>Regras críticas</h3></div><button id="auditBtn" class="linkbtn">Executar agora</button></div><div id="auditList"></div></section>
     </div>
   </main>
+
   <aside class="properties-panel"><small>PROPRIEDADES</small><h2>Configuração</h2><div id="propertiesContent"></div></aside>
 </div>
 <div id="toast" class="toast"></div>
 <div id="modal" class="modal hidden"><div class="modal-card"><button id="closeModal" class="modal-close">×</button><h2 id="modalTitle"></h2><div id="modalBody"></div></div></div>
 <script src="app.js"></script>
 <script src="enhancement-v03.js"></script>
+<script src="enhancement-v08.js"></script>
 </body>
 </html>
