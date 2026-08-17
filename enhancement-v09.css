@@ -1,0 +1,39 @@
+/* Planograma VM v0.9 — limites físicos, etiquetas e cartazes conforme manual */
+.gondola-module.v03{overflow:visible}
+.shelf.v03-shelf{overflow:visible}
+.shelf-products{overflow:visible;display:flex;align-items:flex-end;gap:4px;box-sizing:border-box}
+.shelf-products.fit-products{justify-content:flex-start}
+.shelf-products.single-sku{justify-content:center}
+.sku-group{position:relative;display:flex;align-items:flex-end;flex:0 0 auto;height:100%;min-width:0;z-index:7}
+.sku-facings{display:flex;align-items:flex-end;gap:2px;height:100%;min-width:0}
+.placed.v09-facing{position:relative;flex:0 0 auto;min-width:0!important;width:auto;height:100%;margin:0!important;overflow:visible;display:flex;align-items:flex-end;justify-content:flex-start}
+.placed.v09-facing .product-depth-wrap{position:relative;display:flex;align-items:flex-end;justify-content:flex-start;height:100%;width:auto;transform:none!important;filter:drop-shadow(3px 7px 5px rgba(12,18,24,.27))}
+.placed.v09-facing .generic-product{transform:none!important;flex:none;max-width:none}
+.placed.v09-facing:hover .generic-product{transform:translateY(-1px)!important;filter:brightness(1.06) contrast(1.04)}
+
+/* Regra de etiqueta: início esquerdo da variedade; produto único centralizado. */
+.sku-group>.price-tag{left:0!important;transform:none!important;bottom:-17px!important}
+.shelf-products.single-sku .sku-group>.price-tag{left:50%!important;transform:translateX(-50%)!important}
+.price-tag{z-index:18!important}
+
+/* Cartazes: escala física baseada em gôndola de 2,20 m. 560 px / 2200 mm = 0,2545 px/mm. */
+.product-poster{position:absolute;z-index:35;left:50%;bottom:10px;transform:translateX(-50%);background:#fff;border:1.5px solid #14263d;box-shadow:0 5px 12px rgba(14,27,40,.25);text-align:center;color:#15243a;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow:hidden;pointer-events:none}
+.product-poster .poster-ribbon{width:100%;background:#ff4da3;color:#fff;font-weight:800;letter-spacing:.03em;line-height:1.25;padding:2px 1px}
+.product-poster .poster-name{font-weight:800;line-height:1.05;padding:3px 2px 0;text-transform:uppercase}
+.product-poster .poster-volume{color:#6f7b89;line-height:1.1;margin-top:1px}
+.product-poster .poster-price{color:#ef7600;font-weight:800;line-height:1;margin-top:auto;margin-bottom:4px}
+.product-poster.poster-a3{width:76px;height:107px}.product-poster.poster-a3 .poster-ribbon{font-size:7px}.product-poster.poster-a3 .poster-name{font-size:7px}.product-poster.poster-a3 .poster-volume{font-size:5px}.product-poster.poster-a3 .poster-price{font-size:15px}
+.product-poster.poster-a4{width:54px;height:76px}.product-poster.poster-a4 .poster-ribbon{font-size:6px}.product-poster.poster-a4 .poster-name{font-size:6px}.product-poster.poster-a4 .poster-volume{font-size:4.5px}.product-poster.poster-a4 .poster-price{font-size:12px}
+.product-poster.poster-a5{width:38px;height:54px}.product-poster.poster-a5 .poster-ribbon{font-size:5px}.product-poster.poster-a5 .poster-name{font-size:4.6px}.product-poster.poster-a5 .poster-volume{font-size:3.8px}.product-poster.poster-a5 .poster-price{font-size:9px;margin-bottom:3px}
+.product-poster.poster-a6{width:27px;height:38px}.product-poster.poster-a6 .poster-ribbon{font-size:4px;padding:1px}.product-poster.poster-a6 .poster-name{font-size:3.4px;padding-top:2px}.product-poster.poster-a6 .poster-volume{display:none}.product-poster.poster-a6 .poster-price{font-size:7px;margin-bottom:2px}
+.product-poster.poster-a7{width:19px;height:27px}.product-poster.poster-a7 .poster-ribbon{font-size:3px;padding:1px}.product-poster.poster-a7 .poster-name{font-size:2.7px;padding-top:1px}.product-poster.poster-a7 .poster-volume{display:none}.product-poster.poster-a7 .poster-price{font-size:5.5px;margin-bottom:1px}
+
+.poster-control{margin-top:8px;padding:8px;border:1px solid #e1e6eb;border-radius:9px;background:#fafbfd}
+.poster-control-title{font-size:9px;font-weight:800;color:#344153;margin-bottom:6px}
+.poster-size-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.poster-size-btn{border:1px solid #d8e0e6;background:#fff;border-radius:6px;padding:6px 2px;font-size:8px;font-weight:700;color:#5d6875;cursor:pointer}
+.poster-size-btn:hover,.poster-size-btn.active{border-color:#f5a13d;background:#fff7ec;color:#9d5708}
+.poster-remove-btn{width:100%;margin-top:6px;border:1px solid #efc7c7;background:#fff7f7;color:#af4545;border-radius:6px;padding:7px;font-size:8px;font-weight:700;cursor:pointer}
+.poster-hint{font-size:7px;line-height:1.35;color:#7d8996;margin-top:6px}
+
+.shelf-overflow-warning{position:absolute;right:5px;top:5px;background:#fff1f1;color:#b64343;border:1px solid #efcaca;border-radius:5px;padding:3px 5px;font-size:6px;font-weight:800;z-index:40}
