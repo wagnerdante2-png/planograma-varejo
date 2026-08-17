@@ -1,0 +1,65 @@
+/* v0.10-structure — recursos estruturais preservando integralmente a geometria visual da v0.9 */
+
+/* IMPORTANTE: esta camada não altera largura/altura dos módulos, produtos, prateleiras ou escala da v0.9. */
+.module-head{overflow:visible!important}
+.vm-structure-trigger,.vm-level-trigger{
+  border:1px solid #d9e0e6;background:#fff;color:#5d6a76;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  box-shadow:0 2px 5px rgba(17,35,54,.07);font-family:Inter,sans-serif;
+  transition:.15s ease;z-index:45
+}
+.vm-structure-trigger{width:22px;height:22px;margin-left:5px;font-size:14px}
+.vm-level-trigger{position:absolute;right:5px;top:5px;width:19px;height:19px;font-size:12px;opacity:.30}
+.shelf:hover .vm-level-trigger{opacity:1}
+.vm-structure-trigger:hover,.vm-level-trigger:hover{border-color:#ffad46;color:#b86405;background:#fff9f1}
+
+.vm-plan-menu{
+  position:fixed;z-index:500;display:none;min-width:230px;padding:6px;background:#fff;
+  border:1px solid #dce3e9;border-radius:11px;box-shadow:0 18px 42px rgba(17,35,54,.20)
+}
+.vm-plan-menu.open{display:block}
+.vm-plan-menu .vm-menu-title{padding:7px 9px 6px;font-size:9px;line-height:1.2;font-weight:800;color:#85919c;letter-spacing:.08em;text-transform:uppercase}
+.vm-plan-menu button{width:100%;border:0;background:transparent;text-align:left;padding:9px 10px;border-radius:7px;font:600 11px Inter;color:#334250;cursor:pointer;display:flex;gap:9px;align-items:center}
+.vm-plan-menu button:hover{background:#f4f7f9}
+.vm-plan-menu button.danger{color:#c34e4e}
+.vm-plan-menu hr{border:0;border-top:1px solid #edf1f4;margin:5px}
+.vm-plan-menu .vm-menu-note{padding:6px 9px 8px;font-size:8.5px;line-height:1.4;color:#83909a}
+
+/* Badge discreto — sem deslocar produtos */
+.vm-level-badge{position:absolute;left:5px;top:5px;z-index:30;font-size:6px;font-weight:800;letter-spacing:.07em;color:#7b8791;background:rgba(255,255,255,.84);padding:2px 4px;border-radius:3px;pointer-events:none}
+
+/* Gancheira: muda somente o tipo visual do fundo e adiciona os ganchos, preservando dimensões e produtos */
+.shelf.vm-hooks{
+  background:
+    radial-gradient(circle,#aeb7be 1.05px,transparent 1.35px) 0 0/12px 12px,
+    linear-gradient(180deg,#fafbfc 0,#eef2f4 70%,#dfe5e9 100%)!important;
+  box-shadow:inset 0 8px 13px rgba(255,255,255,.85),inset 0 -9px 13px rgba(105,119,131,.10)!important
+}
+.shelf.vm-hooks .placed{position:relative}
+.shelf.vm-hooks .placed:before{
+  content:"";position:absolute;z-index:0;left:50%;top:-5px;width:2px;height:19px;transform:translateX(-50%);
+  background:linear-gradient(90deg,#7d8992,#e4e8eb 45%,#828d95);box-shadow:5px 0 0 -0.5px #9aa4ab
+}
+.shelf.vm-hooks .placed:after{
+  content:"";position:absolute;z-index:0;left:50%;top:11px;width:14px;height:2px;transform:translateX(-50%);
+  background:linear-gradient(90deg,#7f8991,#dce1e5,#7d878f);border-radius:2px
+}
+.shelf.vm-hooks .product-depth-wrap{position:relative;z-index:2}
+.shelf.vm-hooks .orange-profile{opacity:.88}
+
+/* Fita Cross: overlay visual; não participa do flex dos produtos e portanto não quebra a geometria */
+.vm-cross-tape{
+  position:absolute;z-index:38;right:10px;top:8px;width:38px;height:calc(100% - 24px);pointer-events:auto
+}
+.vm-cross-track{position:absolute;left:50%;top:13px;bottom:0;width:7px;transform:translateX(-50%);border-radius:3px;background:linear-gradient(90deg,#b5bec5,#f4f6f7 38%,#a5afb6 72%,#818c94);box-shadow:2px 3px 5px rgba(0,0,0,.16)}
+.vm-cross-label{position:absolute;left:50%;top:0;transform:translateX(-50%);width:35px;min-height:14px;padding:1px 2px;background:#fff;border:1px solid #7f8991;border-radius:2px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:4.4px;line-height:1.05;font-weight:800;color:#202930;box-shadow:0 2px 4px rgba(0,0,0,.14)}
+.vm-cross-unit{position:absolute;left:50%;transform:translateX(-50%);width:27px;height:22px;border-radius:4px;background:linear-gradient(100deg,#11171c,#657079 34%,#2a3238 70%,#0d1216);box-shadow:2px 3px 5px rgba(0,0,0,.22);color:#fff;font-size:4px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center}
+.vm-cross-unit.u1{top:24%}.vm-cross-unit.u2{top:52%}.vm-cross-unit.u3{top:80%}
+.vm-cross-remove{position:absolute;right:-8px;top:-6px;width:16px;height:16px;border-radius:50%;border:1px solid #e1b9b9;background:#fff;color:#c94a4a;font-size:10px;display:none;align-items:center;justify-content:center;cursor:pointer}
+.vm-cross-tape:hover .vm-cross-remove{display:flex}
+
+/* Resumo no painel lateral, sem alterar o editor */
+.vm-structure-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:7px}
+.vm-structure-card{border:1px solid #e2e8ed;border-radius:7px;padding:7px;background:#fafcfd}
+.vm-structure-card span{display:block;font-size:8px;color:#8b96a0}.vm-structure-card strong{font-size:10px;color:#263746}
+.vm-structure-note{font-size:8.5px;color:#788590;line-height:1.45;margin-top:7px;padding:7px;background:#f6f8fa;border-radius:6px}
